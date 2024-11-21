@@ -37,11 +37,11 @@ outputfolder = f'/home/majidara/General_LSTM_weights/{cluster}/'
 
 if not os.path.exists(outputfolder):
     os.makedirs(outputfolder)
-    print('Oops! directory did not exist, but no worries, I created it!')
+    print('Directory did not exist, but it has been created.')
 
 SaveModel = outputfolder
 
-# Static Data - it must contain items listed by "staticColumns" and grid code
+#Static Data - Must contain attributes listed in "staticColumns" and a column for "gridcode".
 path_static = '/home/majidara/stats/attributes.csv'
 
 # Read and Normalize statistical features
@@ -65,7 +65,7 @@ def create_dataset(X, y, date_df, doy_df, time_steps=1):
 
     return np.array(Xs), np.array(ys), np.array(date), np.array(doy)
 
-# NSE function (Nash-Sutcliff-Efficiency)
+#NSE function (Nash-Sutcliffe Efficiency)
 def NSE(targets, predictions):
     return 1 - (np.sum((targets - predictions) ** 2) / np.sum((targets - np.mean(targets)) ** 2))
 
@@ -121,7 +121,7 @@ for file in os.listdir(folder):
         val[f_columns] = f_transformer.transform(val[f_columns])
         test[f_columns] = f_transformer.transform(test[f_columns])
 
-        # Apply log transformation to the target (log(x+1))
+        # Apply log transformation to the target using log1p (log(x+1))
         train[TargetLabel] = np.log1p(train[TargetLabel])
         val[TargetLabel] = np.log1p(val[TargetLabel])
         test[TargetLabel] = np.log1p(test[TargetLabel])
@@ -163,7 +163,7 @@ for file in os.listdir(folder):
 
         # Save progress
         TraindGridCodes = np.append(TraindGridCodes, GridCode)
-        np.savetxt(SaveModel + 'Grodcodes_Based_On_Which_Trained_sofar.out', TraindGridCodes, delimiter=',')
+        np.savetxt(SaveModel + 'Gridcodes_Based_On_Which_Trained_SoFar.out', TraindGridCodes, delimiter=',')
         model.save_weights(SaveModel + 'Generally_Trained_UP_TO_NOW_Model.h5')
 
         os.remove(Dir)
